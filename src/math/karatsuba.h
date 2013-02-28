@@ -37,8 +37,8 @@ vector<int> karatsuba(const vector<int>& a, const vector<int>& b)
     addTo(res, z1, half);
     addTo(res, z2, half + half);
     
-	trim(res);
-	return res;
+    trim(res);
+    return res;
 }
 
 } // namespace polynomial
