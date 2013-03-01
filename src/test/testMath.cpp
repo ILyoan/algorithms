@@ -50,11 +50,10 @@ TestResult testMathPolynomialBaseMultiply()
             }
         }
     }
-
+END_OF_TEST:
     finIn.close();
     finOut.close();
 
-END_OF_TEST:
     if (isPass) result.passCount++;
     return result;
 }
@@ -95,11 +94,10 @@ TestResult testMathPolynomialKaratsuba()
             }
         }
     }
-
+END_OF_TEST:
     finIn.close();
     finOut.close();
 
-END_OF_TEST:
     if (isPass) result.passCount++;
     return result;
 }
@@ -141,11 +139,10 @@ TestResult testMathPolynomialFFT()
             }
         }
     }
-
+END_OF_TEST:
     finIn.close();
     finOut.close();
 
-END_OF_TEST:
     if (isPass) result.passCount++;
     return result;
 }

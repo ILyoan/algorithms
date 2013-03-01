@@ -1,7 +1,7 @@
 #include "test.h"
 
 #include "testMath.h"
-
+#include "testSequences.h"
 
 TestFailInfo::TestFailInfo(const string& tname, int tcase)
     : testName(tname)
@@ -62,6 +62,7 @@ TestResult testAll()
 {
     vector<pair<string, TestFunction> > tests;
     tests.push_back(make_pair("testMathAll", testMathAll));
+    tests.push_back(make_pair("testSequencesAll", testSequencesAll));
 
     return testThis("testAll", tests);
 }
