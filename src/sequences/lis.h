@@ -1,7 +1,9 @@
 #ifndef ILYOAN_ALGORITHMS_SEQUENCES_LIS_H
 #define ILYOAN_ALGORITHMS_SEQUENCES_LIS_H
 
+#include <set>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 namespace sequences
@@ -56,6 +58,85 @@ vector<int> LIS(const vector<int>& A)
         res.push_back(A[cur]);
         cur = link[cur];
     } while (cur != -1);
+    return res;
+}
+
+// Get the length of Logest Increasing Subequence of vector `A` in O(n log n)
+int FastLISLen(const vector<int>& A)
+{
+    int n = A.size();
+    int maxLen = 0;
+    vector<int> minLast(n);
+    for (int i = 0; i < n; i++) {
+        vector<int>::iterator pos = lower_bound(
+                minLast.begin(), minLast.begin() + maxLen, A[i]);
+        int lisLen = pos - minLast.begin();
+        if (lisLen + 1> maxLen || minLast[lisLen] > A[i]) {
+            minLast[lisLen] = A[i];
+        }
+        maxLen = max(maxLen, lisLen + 1);
+    }
+    return maxLen;
+}
+
+
+
+// Get Logest Increasing Subequence of vector `A` in O(n^2).
+// Return the lexicographically smallest LIS.
+struct LISNode {
+    int n;
+    LISNode* p;
+    set<pair<int, LISNode*> > c;
+};
+void go1(int depth, LISNode* node, LISNode*& maxLast, int& maxDepth)
+{
+    if (depth > maxDepth) {
+        maxDepth = depth;
+        maxLast = node;
+    }
+    set<pair<int, LISNode*> >::iterator it = node->c.begin();
+    while (it != node->c.end()) {
+        go1(depth + 1, it++->second, maxLast, maxDepth);
+    }
+}
+void go2(LISNode* root, LISNode* cur, vector<int>& res) 
+{
+    if (cur == root) return;
+    go2(root, cur->p, res);
+    res.push_back(cur->n);
+}
+vector<int> FastLIS(const vector<int>& A)
+{
+    int n = A.size();
+    int maxLen = 0;
+    vector<int> minLast(n, 0);
+    vector<int> minLastIdx(n, 0);
+    vector<bool> updated(n, false);
+    vector<LISNode> nodes(n);
+    LISNode root;
+    for (int i = 0; i < n; i++) {
+        LISNode* node = &nodes[i];
+        node->n = A[i];
+        vector<int>::iterator pos = lower_bound(
+                minLast.begin(), minLast.begin() + maxLen, A[i]);
+        int lisLen = pos - minLast.begin();
+        if (lisLen + 1 > maxLen 
+                || minLast[lisLen] > A[i]
+                || lisLen > 0 && updated[lisLen-1] && minLast[lisLen] == A[i]) {
+            minLast[lisLen] = A[i];
+            minLastIdx[lisLen] = i;
+            updated[lisLen] = true;
+            if (lisLen > 0) updated[lisLen-1] = false;
+            node->p = lisLen ? &nodes[minLastIdx[lisLen-1]] : &root;
+            node->p->c.insert(make_pair(node->n, node));
+        }
+        maxLen = max(maxLen, lisLen + 1);
+    }
+    vector<int> res;
+    LISNode* maxLast = NULL;
+    int maxDepth = 0;
+    go1(0, &root, maxLast, maxDepth);
+    go2(&root, maxLast, res);
     return res;
 }
 
