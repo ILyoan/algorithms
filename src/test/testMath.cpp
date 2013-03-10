@@ -7,7 +7,6 @@
 using namespace std;
 
 #include "../math/polynomial.h"
-#include "../math/karatsuba.h"
 #include "../math/fft.h"
 using namespace math::polynomial;
 

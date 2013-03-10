@@ -3,6 +3,9 @@
 #include "testMath.h"
 #include "testSequences.h"
 
+#include <cstdlib>
+#include <cstdio>
+
 TestFailInfo::TestFailInfo(const string& tname, int tcase)
     : testName(tname)
     , testCase(tcase)

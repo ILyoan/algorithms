@@ -1,6 +1,3 @@
-#ifndef ILYOAN_ALGORITHMS_MATH_KARATSUBA_H
-#define ILYOAN_ALGORITHMS_MATH_KARATSUBA_H
-
 #include "polynomial.h"
 #include <vector>
 using namespace std;
@@ -43,5 +40,3 @@ vector<int> karatsuba(const vector<int>& a, const vector<int>& b)
 
 } // namespace polynomial
 } // namespace math
-
-#endif
