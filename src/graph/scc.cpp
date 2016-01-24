@@ -3,39 +3,46 @@
 // Solve SCC problem by Tarjan's algorithm.
 vector<int> SCC::Solve(const AdjGraph& g)
 {
-    count = di = fi = 0;
-    id = d = f = vector<int>(g.size(), -1);
-    for (int i = 0; i < g.size(); ++i) {
-        if (d[i] == -1) {
-            Solve(g, i);
+	int n = g.size();
+
+	_di = 0;
+	_scc_count = 0;	
+	_scc_ids = vector<int>(n);
+	_discovers = vector<int>(n, -1);
+	_is_in_stack = vector<bool>(n);
+
+    for (int u = 0; u < n; ++u) {
+        if (_discovers[u] == -1) {
+            Solve(g, u);
         }
     }
-    return id;
+    return _scc_ids;
 }
 
 int SCC::Solve(const AdjGraph& g, int u) {
-    int low = d[u] = di++;
-    st.push(u);
+    int low = _discovers[u] = _di++;
+	_stack.push(u);
+	_is_in_stack[u] = true;
     for (int i = 0; i < g.GetAdjCount(u); ++i) {
         int v = g.GetAdjVertex(u, i);
-        if (d[v] == -1) {
+        if (_discovers[v] == -1) {
             low = min(low, Solve(g, v));
-        } else if (f[v] == -1) {
-            low = min(low, d[v]);
+        } else if ((_is_in_stack[v]) {
+            low = min(low, _discovers[v]);
         }
     }
-    if (low == d[u]) {
+    if (low == _discovers[u]) {
         while (true) {
-            int v = st.top();
-            st.pop();
-            id[v] = count;
+            int v = _stack.top();
+			_stack.pop();
+			_is_in_stack[v] = false;
+			_scc_ids[v] = _scc_count;
             if (u == v) {
                 break;
             }
         }
-        ++count;
+        ++_scc_count;
     }
-    f[u] = fi++;
     return low;
 }
 

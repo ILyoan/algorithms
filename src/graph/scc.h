@@ -17,9 +17,13 @@ public:
     vector<int> Solve(const AdjGraph& g);
 private:
     int Solve(const AdjGraph& g, int u);
-    int di, fi, count;
-    vector<int> id, d, f;
-    stack<int> st;
+
+	int _di;
+	int _scc_count;
+	vector<int> _scc_ids;
+	vector<int> _discovers;
+	vector<bool> _is_in_stack;
+    stack<int> _stack;
 };
 
 };
